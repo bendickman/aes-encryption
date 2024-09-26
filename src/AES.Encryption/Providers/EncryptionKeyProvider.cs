@@ -4,12 +4,7 @@ namespace AES.Encryption.Providers;
 
 public class EncryptionKeyProvider : IEncryptionKeyProvider
 {
-    private readonly IList<byte[]> _encryptionKeys;
-
-    public EncryptionKeyProvider(IList<byte[]> encryptionKeys)
-    {
-        this._encryptionKeys = encryptionKeys;
-    }
+    private readonly IList<byte[]> _encryptionKeys = Array.Empty<byte[]>().ToList();
 
     public EncryptionKey GetCurrentEncryptionKey()
     {

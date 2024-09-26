@@ -5,16 +5,16 @@ namespace AES.Encryption.Services;
 
 public class KeyRotationAwareEncryptionService : IEncryptionService
 {
-    private readonly IEncryptionKeyProvider encryptionKeyProvider;
+    private readonly IEncryptionKeyProvider _encryptionKeyProvider;
 
     public KeyRotationAwareEncryptionService(IEncryptionKeyProvider encryptionKeyProvider)
     {
-        this.encryptionKeyProvider = encryptionKeyProvider;
+        _encryptionKeyProvider = encryptionKeyProvider;
     }
 
     public string Encrypt(string plainText)
     {
-        var encryptionKey = encryptionKeyProvider.GetCurrentEncryptionKey();
+        var encryptionKey = _encryptionKeyProvider.GetCurrentEncryptionKey();
 
         var encryptionService = new AuthenticatedEncryptionService(encryptionKey.Data);
         var base64EncryptedText = encryptionService.Encrypt(plainText);
@@ -24,7 +24,7 @@ public class KeyRotationAwareEncryptionService : IEncryptionService
     public string Decrypt(string cipherText)
     {
         var versionedCiphertext = VersionedAesGcmCiphertext.FromString(cipherText);
-        var encryptionKey = encryptionKeyProvider.GetEncryptionKeyById(versionedCiphertext.KeyId);
+        var encryptionKey = _encryptionKeyProvider.GetEncryptionKeyById(versionedCiphertext.KeyId);
         var encryptionService = new AuthenticatedEncryptionService(encryptionKey.Data);
         return encryptionService.Decrypt(versionedCiphertext.Ciphertext);
     }

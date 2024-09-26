@@ -1,6 +1,6 @@
 ﻿namespace AES.Encryption.Interfaces;
 
-internal interface IEncryptionService
+public interface IEncryptionService
 {
     string Encrypt(string input);
 
